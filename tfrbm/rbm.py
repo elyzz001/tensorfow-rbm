@@ -3,7 +3,7 @@ from __future__ import print_function
 import tensorflow as tf
 import numpy as np
 import sys
-from .util import tf_xavier_init
+from util import tf_xavier_init
 
 
 class RBM:

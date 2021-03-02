@@ -1,6 +1,6 @@
 import tensorflow as tf
-from .rbm import RBM
-from .util import sample_bernoulli
+from rbm import RBM
+from util import sample_bernoulli
 
 
 class BBRBM(RBM):

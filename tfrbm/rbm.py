@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import tensorflow as tf
-import keras
+#import keras
 import numpy as np
 import sys
 from util import tf_xavier_init

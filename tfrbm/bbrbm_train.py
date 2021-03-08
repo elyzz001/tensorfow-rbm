@@ -16,10 +16,43 @@ errs = bbrbm.fit(mnist_images, n_epoches=100, batch_size=10)
 plt.plot(errs)
 plt.show()
 
+############################
+#Test the Reconstruction of the RBM
+IMAGE = 1
+image = mnist_images[IMAGE]
+#crop the imag
+#crop dimentions
+x = 6
+y = 6
+a = image.reshape(28,28)
+img = a[0:16,0:28] #crop the image
+#img = cropND(a,(x,y))
+#show cropped image
+#rint(img)
+plt.imshow(a)
+plt.show()
+plt.imshow(img)
+plt.show()
+#pad the image to make it 780 before feeding it to the BM
+imge = np.pad(img, [(6, ), (0, )], mode='constant')
+#print(imge)
+plt.imshow(imge)
+plt.show()
+#reconstruct
+image_rec = bbrbm.reconstruct(imge.reshape(1,-1))
+#show_digit(image)
+#show_digit(image_rec)
+#plot reconstructed image
+plt.imshow(image_rec.reshape(28,28))
+plt.show()
+
+############################
 #save the weights
 filename = 'weights'
 name = 'bbrbm'
 bbrbm.save_weights(filename,name)
+
+
 
 
 

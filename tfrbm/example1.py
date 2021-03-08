@@ -1,8 +1,7 @@
 
 #Hi there, Can you see this 
 import numpy as np
-import pickle
-from numpy import save
+from numpy import load
 import matplotlib.pyplot as plt
 import keras
 
@@ -20,25 +19,14 @@ from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
 mnist_images = mnist.train.images
 
-bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
-errs = bbrbm.fit(mnist_images, n_epoches=1, batch_size=10)
+#load the saved Model
+errs = load('my_model.npy')
+
+#plot the model
 plt.plot(errs)
 plt.show()
-pickle.dump(bbrbm,'my_model')
-#bbrbm.save('bbrbm_model')
-##Reconstruct an image
-IMAGE = 1
-def show_digit(x):
-    plt.imshow(x.reshape((28, 28)), cmap=plt.cm.gray)
-    plt.show()
-image = mnist_images[IMAGE]
-image_rec = bbrbm.reconstruct(image.reshape(1,-1))
-show_digit(image)
-show_digit(image_rec)
 
-# Save the entire model as a SavedModel.
-#os.mkdir -p saved_model
-#save('my_model.npy',errs)
+
 
 
 

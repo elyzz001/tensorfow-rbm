@@ -1,12 +1,13 @@
 from __future__ import print_function
 
 import tensorflow as tf
+import keras
 import numpy as np
 import sys
 from util import tf_xavier_init
 
 
-class RBM:
+class RBM ():
     def __init__(self,
                  n_visible,
                  n_hidden,

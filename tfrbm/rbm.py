@@ -96,7 +96,7 @@ class RBM ():
 
     def fit(self,
             data_x,
-            n_epoches=10,
+            n_epoches,
             batch_size=10,
             shuffle=True,
             verbose=True):

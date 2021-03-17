@@ -32,7 +32,7 @@ def cropND(img, bounding):
     slices = tuple(map(slice, start, end))
     return img[slices]
 #Test the Reconstruction of the RBM
-IMAGE = 26 #26, 31 works well (which is a 6)
+IMAGE = 1 #26, 31 works well (which is a 6)
 image = mnist_images[IMAGE]
 #crop the imag
 #crop dimentions
@@ -55,7 +55,8 @@ show_digit(imge)
 #reconstruct
 image_rec = bbrbm.reconstruct(imge.reshape(1,-1))
 #plot reconstructed image
-plt.imshow(image_rec.reshape(28,28))
+print(image_rec)
+plt.imshow(image_rec.reshape(28,28),cmap=plt.cm.gray)
 plt.show()
 
 

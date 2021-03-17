@@ -38,7 +38,9 @@ image = mnist_images[IMAGE]
 #crop dimentions
 x = 6
 y = 6
+print(image)
 a = image.reshape(28,28)
+
 img = a[0:16,0:28] #crop the image
 #img = cropND(a,(x,y))
 #show cropped image

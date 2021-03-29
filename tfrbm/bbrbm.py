@@ -17,7 +17,7 @@ class BBRBM(RBM):
 
         def f(x_old, x_new):
             return self.momentum * x_old +\
-self.learning_rate * x_new * (1 - self.momentum) / tf.to_float(tf.shape(x_new)[0])
+            self.learning_rate * x_new * (1 - self.momentum) / tf.to_float(tf.shape(x_new)[0])
 
         delta_w_new = f(self.delta_w, positive_grad - negative_grad)
         delta_visible_bias_new = f(self.delta_visible_bias, tf.reduce_mean(self.x - visible_recon_p, 0))

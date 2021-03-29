@@ -11,8 +11,8 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
-mnist_images = mnist.train.images
-
+mnist_images1 = mnist.test.images
+#mnist_images= np.where(mnist_images1 > 0, 1, 0)
 #create the BM
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
@@ -31,15 +31,18 @@ def cropND(img, bounding):
     end = tuple(map(operator.add, start, bounding))
     slices = tuple(map(slice, start, end))
     return img[slices]
+
 #Test the Reconstruction of the RBM
-IMAGE = 1 #26, 31 works well (which is a 6)
-image = mnist_images[IMAGE]
+IMAGE = 50 #26, 31 works well (which is a 6)
+image = mnist_images1[IMAGE]
+
 #crop the imag
 #crop dimentions
 x = 6
 y = 6
 print(image)
 a = image.reshape(28,28)
+c = image.reshape(28,28)
 
 img = a[0:16,0:28] #crop the image
 #img = cropND(a,(x,y))
@@ -53,11 +56,56 @@ imge = np.pad(img, [(0,12), (0,0)], mode='constant')
 show_digit(imge)
 
 #reconstruct
-image_rec = bbrbm.reconstruct(imge.reshape(1,-1))
+
+#first run
+image_rec1 = bbrbm.reconstruct(imge.reshape(1,-1))
 #plot reconstructed image
-print(image_rec)
-plt.imshow(image_rec.reshape(28,28),cmap=plt.cm.gray)
+print(image_rec1)
+plt.imshow(image_rec1.reshape(28,28))
 plt.show()
+"""
+#second run
+a = image_rec1.reshape(28,28)
+
+image_rec1 = a[0:16,0:28]
+image_rec1  = np.pad(image_rec1 , [(0,12), (0,0)], mode='constant')
+image_rec2 = bbrbm.reconstruct(image_rec1.reshape(1,-1))
+#plot reconstructed image
+print(image_rec2)
+plt.imshow(image_rec2.reshape(28,28))
+plt.show()
+
+#third run
+a
+
+#plot reconstructed image
+print(image_rec3)
+plt.imshow(image_rec3.reshape(28,28))
+plt.show()
+
+IMAGE = 3 #26, 31 works well (which is a 6)
+
+image = mnist_images1[IMAGE]
+print(image)
+plt.imshow(image.reshape(28, 28))
+plt.show()
+
+j = 1
+for j in range(100):
+    a = image.reshape(28,28)
+    image_rec1 = a[0:16,0:28]
+    image_rec2  = np.pad(image_rec1 , [(0,12), (0,0)], mode='constant')
+    image = bbrbm.reconstruct(image_rec2.reshape(1,-1))
+    #print(image)
+    #plt.imshow(image.reshape(28, 28))
+   # plt.show()
+    j = j +1
+    print(j)
+
+print(image)
+plt.imshow(image.reshape(28,28))
+plt.show()
+"""
 
 
 

@@ -5,6 +5,7 @@ import tensorflow as tf
 import numpy as np
 import sys
 from util import tf_xavier_init
+import matplotlib.pyplot as plt
 
 
 class RBM ():
@@ -89,7 +90,17 @@ class RBM ():
         return self.sess.run(self.compute_visible_from_hidden, feed_dict={self.y: batch_y})
 
     def reconstruct(self, batch_x):
-        return self.sess.run(self.compute_visible, feed_dict={self.x: batch_x})
+        i = 1;
+        b = batch_x
+        for i in range(5):
+            a = self.sess.run(self.compute_visible, feed_dict={self.x: b})
+            b = a.reshape(1,-1)
+           # plt.imshow(a.reshape(28, 28))
+            #plt.show()
+            print(i)
+        return  a
+
+
 
     def partial_fit(self, batch_x):
         self.sess.run(self.update_weights + self.update_deltas, feed_dict={self.x: batch_x})

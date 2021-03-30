@@ -13,7 +13,7 @@ mnist_images = mnist.train.images
 #X_test = np.where(mnist_images > 0, 1, 0) #binrize the pixels
 
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
-errs = bbrbm.fit(mnist_images, n_epoches=100, batch_size=10)
+errs = bbrbm.fit(mnist_images, n_epoches=1000, batch_size=10)
 plt.plot(errs)
 plt.show()
 

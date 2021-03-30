@@ -25,6 +25,7 @@ bbrbm.load_weights(filename,name)
 def show_digit(x):
     plt.imshow(x)
     plt.show()
+   # plt.title("epoch 5", fontdict=None, loc='center', pad=None)
 
 def cropND(img, bounding):
     start = tuple(map(lambda a, da: a//2-da//2, img.shape, bounding))
@@ -33,7 +34,7 @@ def cropND(img, bounding):
     return img[slices]
 
 #Test the Reconstruction of the RBM
-IMAGE = 50 #26, 31 works well (which is a 6)
+IMAGE = 6 #26, 31 works well (which is a 6)
 image = mnist_images1[IMAGE]
 
 #crop the imag
@@ -58,11 +59,18 @@ show_digit(imge)
 #reconstruct
 
 #first run
-image_rec1 = bbrbm.reconstruct(imge.reshape(1,-1))
-#plot reconstructed image
-print(image_rec1)
-plt.imshow(image_rec1.reshape(28,28))
-plt.show()
+iter_num = 1
+i= 1
+for i in range(20):
+    image_rec1 = bbrbm.reconstruct(imge.reshape(1,-1),iter_num)
+    #plot reconstructed image
+    print(image_rec1)
+    plt.imshow(image_rec1.reshape(28,28),cmap = plt.cm.binary)
+    plt.colorbar(mappable=None, cax=None, ax=None)
+    plt.title("Reconstruction results for iteration : %i  " % iter_num)
+    plt.show()
+    iter_num = iter_num + 1
+    i = i + 1
 """
 #second run
 a = image_rec1.reshape(28,28)

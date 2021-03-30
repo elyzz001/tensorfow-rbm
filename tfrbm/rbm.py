@@ -89,10 +89,10 @@ class RBM ():
     def transform_inv(self, batch_y):
         return self.sess.run(self.compute_visible_from_hidden, feed_dict={self.y: batch_y})
 
-    def reconstruct(self, batch_x):
+    def reconstruct(self, batch_x,iter_num):
         i = 1;
         b = batch_x
-        for i in range(5):
+        for i in range(iter_num):
             a = self.sess.run(self.compute_visible, feed_dict={self.x: b})
             b = a.reshape(1,-1)
            # plt.imshow(a.reshape(28, 28))

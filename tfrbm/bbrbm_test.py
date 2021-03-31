@@ -11,7 +11,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
-mnist_images1 = mnist.train.images
+mnist_images1 = mnist.test.images
 #mnist_images= np.where(mnist_images1 > 0, 1, 0)
 #create the BM
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
@@ -24,6 +24,8 @@ bbrbm.load_weights(filename,name)
 # fct to plot the images
 def show_digit(x):
     plt.imshow(x,cmap = plt.cm.binary)
+    plt.colorbar(mappable=None, cax=None, ax=None)
+    plt.title("Original Image" )
     plt.show()
    # plt.title("epoch 5", fontdict=None, loc='center', pad=None)
 
@@ -34,7 +36,7 @@ def cropND(img, bounding):
     return img[slices]
 
 #Test the Reconstruction of the RBM
-IMAGE = 26#26, 31 works well (which is a 6)
+IMAGE = 3#26, 31 works well (which is a 6)
 image = mnist_images1[IMAGE]
 
 mask_a_or =np.ones(784)
@@ -62,6 +64,7 @@ c = image.reshape(28,28)
 #img = a[0:16,0:28] #crop the image
 img = a*mask_b
 img_org = img
+imga = img
 #img = cropND(a,(x,y))
 #show cropped image
 #rint(img)
@@ -77,24 +80,24 @@ imge = np.pad(img, [(0,12), (0,0)], mode='constant')
 #first run
 iter_num = 1
 i= 1
-for i in range(20):
-    image_rec1 = bbrbm.reconstruct(img.reshape(1,-1))
+for i in range(12):
+    image_rec1 = bbrbm.reconstruct(image.reshape(1,-1))
     #plot reconstructed image
     #print(image_rec1)
 
     #iter_num = iter_num + 1
     #i = i + 1
     #img = image_rec1
-    img = image_rec1
+    image = image_rec1
     imga = img_org + image_rec1.reshape(28, 28) * mask_c
-    plt.imshow(imga.reshape(28, 28),cmap = plt.cm.binary)
-    plt.colorbar(mappable=None, cax=None, ax=None)
-    plt.title("Reconstruction results for iteration : %i  " % i)
-    plt.show()
+
     #close(plt)
 
 #print the result of construction
-
+plt.imshow(image.reshape(28, 28),cmap = plt.cm.binary)
+plt.colorbar(mappable=None, cax=None, ax=None)
+plt.title("Reconstruction results for iteration : %i  " % i)
+plt.show()
 
 """
 #second run

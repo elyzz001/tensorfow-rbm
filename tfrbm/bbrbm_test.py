@@ -36,21 +36,21 @@ def cropND(img, bounding):
     return img[slices]
 
 #Test the Reconstruction of the RBM
-IMAGE = 3#26, 31 works well (which is a 6)
-image = mnist_images1[IMAGE]
+IMAGE = 20#26, 31 works well (which is a 6)
+#image = mnist_images1[IMAGE]
 
 mask_a_or =np.ones(784)
 mask_c_or =np.zeros(784)
 #prepare first mask
 mask_bb = mask_a_or
 mask_bb = mask_bb.reshape(28,28)
-mask_bb = mask_bb[0:16,0:28]
-mask_b = np.pad(mask_bb, [(0,12), (0,0)], mode='constant')
+mask_bb = mask_bb[0:12,0:28] #change 16 to lower number to clamp smaller area
+mask_b = np.pad(mask_bb, [(0,16), (0,0)], mode='constant')
 #prepare second mask
 mask_cc = mask_c_or
 mask_cc = mask_cc.reshape(28,28)
-mask_cc = mask_cc[0:16,0:28]
-mask_c = np.pad(mask_cc, [(0, 12), (0, 0)], mode='constant', constant_values=1)
+mask_cc = mask_cc[0:12,0:28]
+mask_c = np.pad(mask_cc, [(0, 16), (0, 0)], mode='constant', constant_values=1)
 #crop the imag
 #crop dimentions
 print('size of mask b')
@@ -58,20 +58,20 @@ np.size(mask_b)
 print('size of mask c')
 np.size(mask_b)
 #print(image)
-a = image.reshape(28,28)
-c = image.reshape(28,28)
+#a = image.reshape(28,28)
+#c = image.reshape(28,28)
 
 #img = a[0:16,0:28] #crop the image
-img = a*mask_b
-img_org = img
-imga = img
+#img = a*mask_b
+#img_org = img
+#imga = img
 #img = cropND(a,(x,y))
 #show cropped image
 #rint(img)
-show_digit(a)
-show_digit(img)
+#show_digit(a)
+#show_digit(img)
 #pad the image to make it 780 before feeding it to the BM
-imge = np.pad(img, [(0,12), (0,0)], mode='constant')
+#imge = np.pad(img, [(0,12), (0,0)], mode='constant')
 #print(imge)
 #show_digit(imge)
 
@@ -80,24 +80,37 @@ imge = np.pad(img, [(0,12), (0,0)], mode='constant')
 #first run
 iter_num = 1
 i= 1
-for i in range(12):
-    image_rec1 = bbrbm.reconstruct(image.reshape(1,-1))
+j = 1
+n_data = mnist_images1.shape[0]
+for j in range(n_data):
+    print(j)
+    image = mnist_images1[j]
+    a = image.reshape(28, 28)
+    c = image.reshape(28, 28)
+    show_digit(image.reshape(28,28))
+    # img = a[0:16,0:28] #crop the image
+    img = a * mask_b
+    img_org = img
+    imga = img
+    #show_digit(img.reshape(28,28))
+    for i in range(10001):
+        image_rec1 = bbrbm.reconstruct(imga.reshape(1,-1))
     #plot reconstructed image
     #print(image_rec1)
 
     #iter_num = iter_num + 1
     #i = i + 1
     #img = image_rec1
-    image = image_rec1
-    imga = img_org + image_rec1.reshape(28, 28) * mask_c
+        image = image_rec1
+        imga = img_org + image_rec1.reshape(28, 28) * mask_c
 
     #close(plt)
 
 #print the result of construction
-plt.imshow(image.reshape(28, 28),cmap = plt.cm.binary)
-plt.colorbar(mappable=None, cax=None, ax=None)
-plt.title("Reconstruction results for iteration : %i  " % i)
-plt.show()
+    plt.imshow(imga.reshape(28, 28),cmap = plt.cm.binary)
+    plt.colorbar(mappable=None, cax=None, ax=None)
+    plt.title("Reconstruction results for iteration : %i  " % i)
+    plt.show()
 
 """
 #second run

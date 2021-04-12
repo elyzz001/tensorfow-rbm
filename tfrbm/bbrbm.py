@@ -34,6 +34,16 @@ class BBRBM(RBM):
         self.update_deltas = [update_delta_w, update_delta_visible_bias, update_delta_hidden_bias]
         self.update_weights = [update_w, update_visible_bias, update_hidden_bias]
 
-        self.compute_hidden = tf.nn.sigmoid(tf.matmul(self.x, self.w) + self.hidden_bias)
-        self.compute_visible = tf.nn.sigmoid(tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias)
+        compute_hidden_real = tf.nn.sigmoid(tf.matmul(self.x, self.w) + self.hidden_bias)
+        #binarize hidden
+        h_st2 = tf.math.greater(compute_hidden_real, tf.random.uniform([64]))
+        compute_hidden = tf.cast(h_st2, tf.float32)
+        self.compute_hidden = compute_hidden########
+        #######
+        compute_visible_real = tf.nn.sigmoid(tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias)
+        #binarize visual
+        h_st3 = tf.math.greater(compute_visible_real, tf.random.uniform([784]))
+        compute_visible = tf.cast(h_st3, tf.float32)
+        self.compute_visible =compute_visible########
+        ######
         self.compute_visible_from_hidden = tf.nn.sigmoid(tf.matmul(self.y, tf.transpose(self.w)) + self.visible_bias)

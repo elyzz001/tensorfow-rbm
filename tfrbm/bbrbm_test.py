@@ -2,6 +2,7 @@
 import numpy as np
 from numpy import load
 import operator
+import tensorflow as tf
 import matplotlib.pyplot as plt
 import os,sys,inspect
 sys.path.insert(1, os.path.join(sys.path[0], '..')) #this line shold always stay above the next line below
@@ -11,8 +12,8 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
-mnist_images1 = mnist.test.images
-#mnist_images= np.where(mnist_images1 > 0, 1, 0)
+mnist_images = mnist.test.images
+mnist_images1= np.where(mnist_images > 0, 1, 0)
 #create the BM
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
@@ -102,11 +103,16 @@ for j in range(n_data):
     #i = i + 1
     #img = image_rec1
         image = image_rec1
+       # h_st3 = np.greater(image_rec1, np.random.uniform(0, 1, 784))
+        #imga1 = h_st3.astype(int)
         imga = img_org + image_rec1.reshape(28, 28) * mask_c
 
     #close(plt)
 
 #print the result of construction
+    #h_st2 = np.greater(image_rec1, np.random.uniform(0,1,784))
+    #imga = h_st2.astype(int)
+    #imga = img_org + imga.reshape(28, 28) * mask_c
     plt.imshow(imga.reshape(28, 28),cmap = plt.cm.binary)
     plt.colorbar(mappable=None, cax=None, ax=None)
     plt.title("Reconstruction results for iteration : %i  " % i)

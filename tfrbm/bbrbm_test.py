@@ -13,13 +13,10 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
-<<<<<<< HEAD
 mnist_images = mnist.test.images
-mnist_images1= np.where(mnist_images > 0, 1, 0)
-=======
-mnist_images1 = mnist.test.images
-#mnist_images1= np.where(mnist_images > 0, 1, 0)
->>>>>>> 41d7bf35c59085251fed9e65241d28e498cdcf60
+mnist_images1= np.where(mnist_images > 0.5, 1, 0)
+
+print(mnist_images[1])
 #create the BM
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
@@ -92,6 +89,7 @@ n_data = mnist_images1.shape[0]
 for j in range(n_data):
     print(j)
     image = mnist_images1[j]
+    print(image)
     a = image.reshape(28, 28)
     c = image.reshape(28, 28)
     show_digit(image.reshape(28,28))
@@ -99,7 +97,7 @@ for j in range(n_data):
     img = a * mask_b
     img_org = img
     imga = img
-    #show_digit(img.reshape(28,28))
+    show_digit(img.reshape(28,28))
     for i in range(10001):
         image_rec1 = bbrbm.reconstruct(imga.reshape(1,-1))
     #plot reconstructed image
@@ -116,16 +114,16 @@ for j in range(n_data):
     #close(plt)
 
 #print the result of construction
-<<<<<<< HEAD
+
     #h_st2 = np.greater(image_rec1, np.random.uniform(0,1,784))
     #imga = h_st2.astype(int)
     #imga = img_org + imga.reshape(28, 28) * mask_c
-=======
+
     image_rec_bin = np.greater(image_rec1, np.random.uniform(0,1,784))
     image_bin = image_rec_bin.astype( int)
     print(image_bin)
     #imga = img_org + image_bin.reshape(28, 28) * mask_c
->>>>>>> 41d7bf35c59085251fed9e65241d28e498cdcf60
+
     plt.imshow(imga.reshape(28, 28),cmap = plt.cm.binary)
     plt.colorbar(mappable=None, cax=None, ax=None)
     plt.title("Reconstruction results for iteration : %i  " % i)

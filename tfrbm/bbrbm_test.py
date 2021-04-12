@@ -1,5 +1,6 @@
 #Hi there, Can you see this
 import numpy as np
+import tensorflow as tf
 from numpy import load
 import operator
 import matplotlib.pyplot as plt
@@ -12,7 +13,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
 mnist_images1 = mnist.test.images
-#mnist_images= np.where(mnist_images1 > 0, 1, 0)
+#mnist_images1= np.where(mnist_images > 0, 1, 0)
 #create the BM
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
@@ -107,6 +108,10 @@ for j in range(n_data):
     #close(plt)
 
 #print the result of construction
+    image_rec_bin = np.greater(image_rec1, np.random.uniform(0,1,784))
+    image_bin = image_rec_bin.astype( int)
+    print(image_bin)
+    #imga = img_org + image_bin.reshape(28, 28) * mask_c
     plt.imshow(imga.reshape(28, 28),cmap = plt.cm.binary)
     plt.colorbar(mappable=None, cax=None, ax=None)
     plt.title("Reconstruction results for iteration : %i  " % i)

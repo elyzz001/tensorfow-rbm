@@ -103,14 +103,15 @@ for j in range(n_data):
     imga = img
     show_digit(random_image.reshape(28,28))
     for i in range(20001):
-        image_rec1 = bbrbm.reconstruct(imga.reshape(1,-1))
+        image_rec1 = bbrbm.reconstruct(random_image.reshape(1,-1))
     #plot reconstructed image
     #print(image_rec1)
 
     #iter_num = iter_num + 1
     #i = i + 1
     #img = image_rec1
-        imga = image_rec1
+        random_image = image_rec1
+        #imga = image_rec1
        # h_st3 = np.greater(image_rec1, np.random.uniform(0, 1, 784))
         #imga1 = h_st3.astype(int)
         imga = img_org + image_rec1.reshape(28, 28) * mask_c
@@ -128,7 +129,7 @@ for j in range(n_data):
     #print(image_bin)
     #imga = img_org + image_bin.reshape(28, 28) * mask_c
 
-    plt.imshow(imga.reshape(28, 28),cmap = plt.cm.binary)
+    plt.imshow(image_rec1.reshape(28, 28),cmap = plt.cm.binary)
     plt.colorbar(mappable=None, cax=None, ax=None)
     plt.title("Reconstruction results for iteration : %i  " % i)
     plt.show()

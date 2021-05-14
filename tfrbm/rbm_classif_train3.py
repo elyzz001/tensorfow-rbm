@@ -76,8 +76,8 @@ plt.show()
 
 #create the BM
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
-err = bbrbm.fit(mnist_labeled, n_epoches=1000, batch_size=10)
+err = bbrbm.fit(mnist_labeled, n_epoches=5000, batch_size=10)
 #save the weights
-filename = 'weights_class5'
-name = 'bbrbm_class5'
+filename = 'weights_class5kep'
+name = 'bbrbm_class5kep'
 bbrbm.save_weights(filename,name)

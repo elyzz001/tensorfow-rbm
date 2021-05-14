@@ -13,10 +13,13 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
-mnist_images = mnist.train.images
+mnist_images = mnist.test.images
 mnist_images1= np.where(mnist_images > 0.5, 1, 0)
 
-print(mnist_images[1])
+
+
+
+
 #create the BM
 bbrbm = BBRBM(n_visible=784, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
@@ -91,6 +94,10 @@ random_image = np.random.uniform(0,1,784)
 image_rec_bin = np.greater(random_image, np.random.uniform(0,1,784))
 random_image = image_rec_bin.astype( int)
 for j in range(n_data):
+    random_image = np.random.uniform(0, 1, 784)
+    image_rec_bin = np.greater(random_image, np.random.uniform(0, 1, 784))
+    random_image = image_rec_bin.astype(int)
+
     print(j)
     image = mnist_images1[j]
     print(image)
@@ -100,18 +107,18 @@ for j in range(n_data):
     # img = a[0:16,0:28] #crop the image
     img = a * mask_b
     img_org = img
-    imga = img
+    imga  = img
     show_digit(random_image.reshape(28,28))
-    for i in range(20001):
-        image_rec1 = bbrbm.reconstruct(random_image.reshape(1,-1))
+    for i in range(101):
+        image_rec1 = bbrbm.reconstruct(imga.reshape(1,-1))
     #plot reconstructed image
     #print(image_rec1)
 
     #iter_num = iter_num + 1
     #i = i + 1
     #img = image_rec1
-        random_image = image_rec1
-        #imga = image_rec1
+        #random_image = image_rec1
+        imga = image_rec1
        # h_st3 = np.greater(image_rec1, np.random.uniform(0, 1, 784))
         #imga1 = h_st3.astype(int)
         imga = img_org + image_rec1.reshape(28, 28) * mask_c

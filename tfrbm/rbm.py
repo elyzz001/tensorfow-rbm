@@ -89,11 +89,15 @@ class RBM ():
     def transform_inv(self, batch_y):
         return self.sess.run(self.compute_visible_from_hidden, feed_dict={self.y: batch_y})
 
-    def reconstruct(self, batch_x):
+    def reconstruct(self, batch_x, index):
 
         #b = batch_x
         #for i in range(iter_num):
-        a = self.sess.run(self.compute_visible, feed_dict={self.x: batch_x})
+        if(index ==1):
+            a = self.sess.run(self.compute_visible_real, feed_dict={self.x: batch_x})
+            #print("return the real valued image")
+        else:
+            a = self.sess.run(self.compute_visible, feed_dict={self.x: batch_x})
         #b = a.reshape(1,-1)
         # plt.imshow(a.reshape(28, 28))
         #plt.show()
@@ -105,7 +109,7 @@ class RBM ():
 
     def partial_fit(self, batch_x):
         self.sess.run(self.update_weights + self.update_deltas, feed_dict={self.x: batch_x})
-
+       # print("batch x shape",batch_x.shape) #################
     def fit(self,
             data_x,
             n_epoches,

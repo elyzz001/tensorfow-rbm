@@ -1,2 +1,2 @@
-model_checkpoint_path: "weights_class5"
-all_model_checkpoint_paths: "weights_class5"
+model_checkpoint_path: "weights_class5kep"
+all_model_checkpoint_paths: "weights_class5kep"

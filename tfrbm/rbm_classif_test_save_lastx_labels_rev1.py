@@ -33,7 +33,7 @@ def show_digit(x,y):
 #labels pixels
 accu = [0]
 num_avg = 100
-n_data = 10000#mnist_images1.shape[0]
+n_data = 1000#mnist_images1.shape[0]
 print("accuracy",accu)
 t1 = np.zeros(10)
 
@@ -42,8 +42,8 @@ print("minist test size",mnist_images1.shape)
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
 #load the saved weights
-filename = 'weights_class5'
-name = 'bbrbm_class5'
+filename = 'weights_class5kep'
+name = 'bbrbm_class5kep'
 bbrbm.load_weights(filename,name)
 
 #Test the Reconstruction of the RBM
@@ -116,7 +116,9 @@ for j in range(n_data) :
 
         #print("new shape of of rec1", image_rec1.shape)
         rec_backup = image_rec1
+        t1 = image_rec1[0:10]
         image_rec1 = image_rec1[10:794].reshape(28,28 )
+
         #print("size ofa", a.size)
         img= img_org + np.concatenate((t1, (image_rec1 * mask_c).flatten()), axis=0)
         #show_digit(image_rec1.reshape(30, 30), "returned image")

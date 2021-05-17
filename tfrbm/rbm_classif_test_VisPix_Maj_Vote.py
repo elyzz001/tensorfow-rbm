@@ -32,8 +32,8 @@ def show_digit(x,y):
 
 #labels pixels
 accu = [0]
-num_avg = 100
-n_data = 10000#mnist_images1.shape[0]
+num_avg = 200
+n_data = 1000#mnist_images1.shape[0]
 print("accuracy",accu)
 t1 = np.zeros(10)
 
@@ -42,8 +42,8 @@ print("minist test size",mnist_images1.shape)
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
 #load the saved weights
-filename = 'weights_class5'
-name = 'bbrbm_class5'
+filename = 'weights_class5kep'
+name = 'bbrbm_class5kep'
 bbrbm.load_weights(filename,name)
 
 #Test the Reconstruction of the RBM
@@ -100,12 +100,12 @@ for j in range(n_data) :
     #imga = random_image#imga = img
     #show_digit(img_org[10:794].reshape(28,28),"croped input")
     #reconstruct image for N-MC
-    for i in range(200):
+    for i in range(400):
         image_rec1 = bbrbm.reconstruct(img.reshape(1,-1),0)
         #print("shape of of rec1",image_rec1.shape)
         image_rec1 = image_rec1.reshape(794, )
-        if( i > 200 - num_avg -1):
-            store_recon_vu[i - (200 - num_avg)] = image_rec1
+        if( i > 400 - num_avg -1):
+            store_recon_vu[i - (400 - num_avg)] = image_rec1
             #print("stored labels : ", store_labels)
             #print("index i : ", i)
 
@@ -132,7 +132,7 @@ for j in range(n_data) :
     a = np.sum(store_recon_vu, axis=0)
     #print("labels are  ", store_labels)
     #print("a is ", a)
-    #print("shape of labels is ", store_labels.shape[1])
+    print("shape of labels is ", store_recon_vu.shape[1])
 
     ## calculate the majority vote such that if 51 of the iterations is "1" --> Vu = '1' , otherwise Vu = '0'
     for ii in range(store_recon_vu.shape[1]):
@@ -142,10 +142,12 @@ for j in range(n_data) :
         else:
             a[ii] = 0
 
+    #show_digit(a[10:794].reshape(28, 28), "reconstructed image using VU majority vote")
     ## EXTRACT THE LABELS
+
     rec_labels = a[0:10]
 
-    for ii in range(rec_labels.shape[1]):
+    for ii in range(10):
         b = b + a[ii]
     if( b > 1): # the network can't decide which one is the number among more than one number ('1' in more than one pixel)
         reconst_err = False #set flag to indicate that

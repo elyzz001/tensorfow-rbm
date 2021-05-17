@@ -33,7 +33,7 @@ def show_digit(x,y):
 #labels pixels
 accu = [0]
 num_avg = 100
-n_data = 10000#mnist_images1.shape[0]
+n_data = 1000#mnist_images1.shape[0]
 print("accuracy",accu)
 t1 = np.zeros(10)
 
@@ -42,8 +42,8 @@ print("minist test size",mnist_images1.shape)
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
 #load the saved weights
-filename = 'weights_class5'
-name = 'bbrbm_class5'
+filename = 'weights_class5kep'
+name = 'bbrbm_class5kep'
 bbrbm.load_weights(filename,name)
 
 #Test the Reconstruction of the RBM
@@ -143,7 +143,7 @@ for j in range(n_data) :
     ## EXTRACT THE LABELS
     rec_labels = a[0:10]
 
-    for ii in range(rec_labels.shape[1]):
+    for ii in range(10):
         b = b + a[ii]
     if( b > 1): # the network can't decide which one is the number among more than one number ('1' in more than one pixel)
         reconst_err = False #set flag to indicate that

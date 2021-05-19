@@ -7,7 +7,6 @@ import sys
 from util import tf_xavier_init
 import matplotlib.pyplot as plt
 
-
 class RBM ():
     def __init__(self,
                  n_visible,
@@ -48,10 +47,10 @@ class RBM ():
         self.delta_visible_bias = tf.Variable(tf.zeros([self.n_visible]), dtype=tf.float32)
         self.delta_hidden_bias = tf.Variable(tf.zeros([self.n_hidden]), dtype=tf.float32)
 
-        self.update_weights = None
-        self.update_deltas = None
-        self.compute_hidden = None
-        self.compute_visible = None
+        self.update_weights   = None
+        self.update_deltas    = None
+        self.compute_hidden   = None
+        self.compute_visible  = None
         self.compute_visible_from_hidden = None
 
         self._initialize_vars()
@@ -99,13 +98,10 @@ class RBM ():
         else:
             a = self.sess.run(self.compute_visible, feed_dict={self.x: batch_x})
         #b = a.reshape(1,-1)
-        # plt.imshow(a.reshape(28, 28))
+        #plt.imshow(a.reshape(28, 28))
         #plt.show()
         #print(i)
         return a
-
-
-
 
     def partial_fit(self, batch_x):
         self.sess.run(self.update_weights + self.update_deltas, feed_dict={self.x: batch_x})
@@ -117,7 +113,18 @@ class RBM ():
             shuffle=True,
             verbose=True):
         assert n_epoches > 0
-
+        #########
+        fname = ["weights_class700ep", "weights_class800ep", "weights_class900ep", "weights_class1kep",
+                 "weights_class1.1kep", "weights_class1.2kep", "weights_class1.3kep", "weights_class1.4kep",
+                 "weights_class1.5kep", "weights_class1.6kep", "weights_class1.7kep", "weights_class1.8kep",
+                 "weights_class1.9kep",
+                 "weights_class2kep"]  # ,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
+        name = ["bbrbm_class700ep", "bbrbm_class800ep", "bbrbm_class900ep", "bbrbm_class1kep", "bbrbm_class1.1kep",
+                "bbrbm_class1.2kep", "bbrbm_class1.3kep", "bbrbm_class1.4kep", "bbrbm_class1.5kep", "bbrbm_class1.6kep",
+                "bbrbm_class1.7kep", "bbrbm_class1.8kep", "bbrbm_class1.9kep", "bbrbm_class2kep"]
+        ep = np.array([700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000])
+        ij = 0
+        ##########
         n_data = data_x.shape[0]
 
         if batch_size > 0:
@@ -167,6 +174,12 @@ class RBM ():
                 sys.stdout.flush()
 
             errs = np.hstack([errs, epoch_errs])
+            #trying to save the training data for diff ep_num whithout starting over
+            if(e == ep[ij]-1 ):
+                filename =  fname[ij]
+                name1 = name[ij]#'bbrbm_class2ep_inside_rbmpy'
+                self.save_weights(filename, name1)
+                ij = ij +1
 
         return errs
 

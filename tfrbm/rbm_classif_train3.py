@@ -37,6 +37,8 @@ print("mnist size",mnist_images1.size)
 #pad image all around one time with zeros
 #show_digit(t1.reshape(1,-1))
 #for loop to add one-hot labels to the images as pixels
+fname = ["weights_class700ep","weights_class800ep","weights_class900ep","weights_class1kep","weights_class1.1kep","weights_class1.2kep","weights_class1.3kep","weights_class1.4kep","weights_class1.5kep","weights_class1.6kep","weights_class1.7kep","weights_class1.8kep","weights_class1.9kep","weights_class2kep"]#,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
+name = ["bbrbm_class700ep","bbrbm_class800ep","bbrbm_class900ep","bbrbm_class1kep","bbrbm_class1.1kep","bbrbm_class1.2kep","bbrbm_class1.3kep","bbrbm_class1.4kep","bbrbm_class1.5kep","bbrbm_class1.6kep","bbrbm_class1.7kep","bbrbm_class1.8kep","bbrbm_class1.9kep","bbrbm_class2kep"]
 mnist_labeled = np.zeros(43670000) #create empty array for the new images
 mnist_labeled = mnist_labeled.reshape(55000,794) #reshape it (2D)
 n_data = mnist_images1.shape[0]
@@ -72,12 +74,13 @@ plt.locator_params(axis="x", nbins=9)
 plt.show()
 #for m in range(19):
    # show_digit(mnist_labeled[m].reshape(28, 28))
+ep = np.array([700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,2000])#700, 800, 900, 1000, 1100, 1200,1300,1400, 1500,1600,1700]
 
 
-#create the BM
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
-err = bbrbm.fit(mnist_labeled, n_epoches=10000, batch_size=10)
-#save the weights
-filename = 'weights_class10kep'
-name = 'bbrbm_class10kep'
-bbrbm.save_weights(filename,name)
+#for i in range(ep.size):
+err = bbrbm.fit(mnist_labeled, n_epoches=2001, batch_size=10)
+        #save the weights
+    #filename = fname[i] #'weights_class600ep'
+    #name1 = name[i] #'bbrbm_class600ep'
+    #bbrbm.save_weights(filename,name1)

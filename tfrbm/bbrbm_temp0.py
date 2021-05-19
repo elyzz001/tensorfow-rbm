@@ -33,21 +33,24 @@ class BBRBM(RBM):
         self.update_deltas = [update_delta_w, update_delta_visible_bias, update_delta_hidden_bias]
         self.update_weights = [update_w, update_visible_bias, update_hidden_bias]
 
-        compute_hidden_real = tf.nn.sigmoid(tf.matmul(self.x, self.w) + self.hidden_bias)
+        compute_hidden_real_t0 = tf.matmul(self.x, self.w) + self.hidden_bias
+        compute_hidden_real_t0 = tf.where(compute_hidden_real_t0 < 0, 0)
+        compute_hidden_real_t0= tf.where(compute_hidden_real_t0 > 0, 1)
+        compute_hidden_real_t0 = tf.where(compute_hidden_real_t0 == 0, 0.5)
         #binarize hidden
         h_st_bin = tf.math.greater(compute_hidden_real, tf.random.uniform([64]))
         compute_hidden = tf.cast(h_st_bin, tf.float32)
         self.compute_hidden = compute_hidden########
         #######
         #sigmoid fct for t = 0
-        compute_visible_real_x = tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias
-        compute_visible_real = tf.where(compute_visible_real_x < 0 , 0)
-        compute_visible_real = tf.where(compute_visible_real > 0 , 1)
-        compute_visible_real = tf.where(compute_visible_real == 0, 0.5)
+        compute_visible_real__t0 = tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias
+        compute_visible_real_t0 = tf.where(compute_visible_real__t0 < 0 , 0)
+        compute_visible_real_t0 = tf.where(compute_visible_real_t0 > 0 , 1)
+        compute_visible_real_t0 = tf.where(compute_visible_real_t0 == 0, 0.5)
         self.compute_visible_real = compute_visible_real
         #binarize visual
         v_st_bin = tf.math.greater(compute_visible_real, tf.random.uniform([794]))
-        compute_visible = tf.cast(v_st_bin, tf.float32)
+        compute_visible = tf.cast(v_st_bin, tf.float32) 
         self.compute_visible =compute_visible########
         ######
         self.compute_visible_from_hidden = tf.nn.sigmoid(tf.matmul(self.y, tf.transpose(self.w)) + self.visible_bias)

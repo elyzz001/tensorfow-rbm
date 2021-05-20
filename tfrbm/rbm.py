@@ -114,15 +114,12 @@ class RBM ():
             verbose=True):
         assert n_epoches > 0
         #########
-        fname = ["weights_class700ep", "weights_class800ep", "weights_class900ep", "weights_class1kep",
-                 "weights_class1.1kep", "weights_class1.2kep", "weights_class1.3kep", "weights_class1.4kep",
-                 "weights_class1.5kep", "weights_class1.6kep", "weights_class1.7kep", "weights_class1.8kep",
-                 "weights_class1.9kep",
-                 "weights_class2kep"]  # ,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
-        name = ["bbrbm_class700ep", "bbrbm_class800ep", "bbrbm_class900ep", "bbrbm_class1kep", "bbrbm_class1.1kep",
-                "bbrbm_class1.2kep", "bbrbm_class1.3kep", "bbrbm_class1.4kep", "bbrbm_class1.5kep", "bbrbm_class1.6kep",
-                "bbrbm_class1.7kep", "bbrbm_class1.8kep", "bbrbm_class1.9kep", "bbrbm_class2kep"]
-        ep = np.array([700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000])
+        fname = ["weights_class10ep", "weights_class20ep", "weights_class30ep", "weights_class40ep",
+                 "weights_class50ep", "weights_class60ep", "weights_class70kep", "weights_class80kep",
+                 "weights_class90kep", "weights_class100kep"]  # ,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
+        name = ["bbrbm_class10ep", "bbrbm_class20ep", "bbrbm_class30ep", "bbrbm_class40ep", "bbrbm_class50ep",
+                "bbrbm_class60ep", "bbrbm_class70ep", "bbrbm_class80ep", "bbrbm_class90ep", "bbrbm_class100ep"]
+        ep = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
         ij = 0
         ##########
         n_data = data_x.shape[0]

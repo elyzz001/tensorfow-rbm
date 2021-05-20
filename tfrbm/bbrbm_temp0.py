@@ -50,7 +50,7 @@ class BBRBM(RBM):
         self.compute_visible_real = compute_visible_real
         #binarize visual
         v_st_bin = tf.math.greater(compute_visible_real, tf.random.uniform([794]))
-        compute_visible = tf.cast(v_st_bin, tf.float32) 
+        compute_visible = tf.cast(v_st_bin, tf.float32)
         self.compute_visible =compute_visible########
         ######
         self.compute_visible_from_hidden = tf.nn.sigmoid(tf.matmul(self.y, tf.transpose(self.w)) + self.visible_bias)

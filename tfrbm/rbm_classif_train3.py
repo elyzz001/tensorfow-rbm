@@ -79,7 +79,7 @@ ep = np.array([700,800,900,1000,1100,1200,1300,1400,1500,1600,1700,1800,1900,200
 
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 #for i in range(ep.size):
-err = bbrbm.fit(mnist_labeled, n_epoches=2001, batch_size=10)
+err = bbrbm.fit(mnist_labeled, n_epoches=101, batch_size=10)
         #save the weights
     #filename = fname[i] #'weights_class600ep'
     #name1 = name[i] #'bbrbm_class600ep'

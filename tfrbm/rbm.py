@@ -114,12 +114,18 @@ class RBM ():
             verbose=True):
         assert n_epoches > 0
         #########
-        fname = ["weights_class10ep", "weights_class20ep", "weights_class30ep", "weights_class40ep",
-                 "weights_class50ep", "weights_class60ep", "weights_class70kep", "weights_class80kep",
-                 "weights_class90kep", "weights_class100kep"]  # ,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
-        name = ["bbrbm_class10ep", "bbrbm_class20ep", "bbrbm_class30ep", "bbrbm_class40ep", "bbrbm_class50ep",
-                "bbrbm_class60ep", "bbrbm_class70ep", "bbrbm_class80ep", "bbrbm_class90ep", "bbrbm_class100ep"]
-        ep = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+        fname = ["weights_class3kep", "weights_class4kep", "weights_class5kep", "weights_class6kep", "weights_class7kep"
+            , "weights_class8kep", "weights_class9kep", "weights_class10kep", "weights_class11kep", "weights_class12kep"
+            , "weights_class13kep", "weights_class14kep", "weights_class15kep", "weights_class16kep",
+                 "weights_class17kep", "weights_class18kep", "weights_class19kep",
+                 "weights_class20kep"]  # ,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
+        name = ["bbrbm_class3kep", "bbrbm_class4kep", "bbrbm_class5kep", "bbrbm_class6kep", "bbrbm_class7kep"
+            , "bbrbm_class8kep", "bbrbm_class9kep", "bbrbm_class10kep", "bbrbm_class11kep", "bbrbm_class12kep"
+            , "bbrbm_class13kep", "bbrbm_class14kep", "bbrbm_class15kep", "bbrbm_class16kep", "bbrbm_class17kep"
+            , "bbrbm_class18kep", "bbrbm_class19kep", "bbrbm_class20kep"]
+        #ep = np.array([10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+        ep = np.array([3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,15000,16000,17000,18000,19000,20000])#700, 800, 900, 1000, 1100, 1200,1300,1400, 1500,1600,1700]
+
         ij = 0
         ##########
         n_data = data_x.shape[0]

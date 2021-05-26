@@ -33,7 +33,7 @@ def show_digit(x,y):
 #labels pixels
 accu = [0]
 num_avg = 200
-n_data = 1000#mnist_images1.shape[0]
+n_data = 100#mnist_images1.shape[0]
 print("accuracy",accu)
 t1 = np.zeros(10)
 
@@ -117,8 +117,8 @@ for j in range(n_data) :
         img= img_org + np.concatenate((t1, (image_rec1 * mask_c).flatten()), axis=0)
         #show_digit(image_rec1.reshape(30, 30), "returned image")
         #show_digit(img.reshape(30, 30), "image to be fed")
-    #show_digit(img[10:794].reshape(28, 28), "reconstructed image")
-    #show_digit(rec_backup[0:10].reshape(1, -1), "reconstructed label")
+    show_digit(img[10:794].reshape(28, 28), "reconstructed image")
+    show_digit(rec_backup[0:10].reshape(1, -1), "reconstructed label")
     #max vote for the correct label
     #print("index i : ", i)
     a = 0
@@ -132,7 +132,7 @@ for j in range(n_data) :
     a = np.sum(store_recon_vu, axis=0)
     #print("labels are  ", store_labels)
     #print("a is ", a)
-    print("shape of labels is ", store_recon_vu.shape[1])
+    #print("shape of labels is ", store_recon_vu.shape[1])
 
     ## calculate the majority vote such that if 51 of the iterations is "1" --> Vu = '1' , otherwise Vu = '0'
     for ii in range(store_recon_vu.shape[1]):

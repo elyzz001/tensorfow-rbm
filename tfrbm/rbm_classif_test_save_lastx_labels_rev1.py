@@ -12,7 +12,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 #load the mnist data
 mnist = input_data.read_data_sets('MNIST_data/', one_hot=True)
-mnist_images = mnist.train.images
+mnist_images = mnist.test.images
 mnist_images1= np.where(mnist_images > 0, 1, 0)
 
 #helper fcts
@@ -32,7 +32,7 @@ def show_digit(x,y):
 #labels pixels
 
 num_avg = 100
-n_data = 5000#mnist_images1.shape[0]
+n_data = 1000#mnist_images1.shape[0]
 #print("accuracy",accu)
 t1 = np.zeros(10)
 
@@ -41,11 +41,18 @@ print("minist test size",mnist_images1.shape)
 bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
 
-fname = ["weights_class10ep", "weights_class20ep", "weights_class30ep", "weights_class40ep",
-                 "weights_class50ep", "weights_class60ep", "weights_class70kep", "weights_class80kep",
-                 "weights_class90kep", "weights_class100kep"]#,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
-name = ["bbrbm_class10ep", "bbrbm_class20ep", "bbrbm_class30ep", "bbrbm_class40ep", "bbrbm_class50ep",
-                "bbrbm_class60ep", "bbrbm_class70ep", "bbrbm_class80ep", "bbrbm_class90ep", "bbrbm_class100ep"]
+fname = ["weights_class10kep"#,"weights_class20ep","weights_class30ep","weights_class40ep","weights_class50ep", "weights_class60ep", "weights_class70ep", "weights_class80ep",
+           #"weights_class90ep", "weights_class100ep","weights_class1kep","weights_class1.1kep","weights_class1.2kep", "weights_class1.3kep", "weights_class1.4kep",
+        #"weights_class1.5kep","weights_class1.6kep","weights_class1.7kep","weights_class1.8kep","weights_class1.9kep", "weights_class2kep",
+    #"weights_class3kep","weights_class4kep","weights_class5kep","weights_class6kep"
+         ]
+                 #]#,"5-3","6-3","7-3","8-3","9-3","10-3","11-3","12-3","13-3","14-3","15-3","16-3","17-3","18-3","19-3","20-3"]
+name = ["bbrbm_class10kep"#,"bbrbm_class20ep","bbrbm_class30ep","bbrbm_class40ep","bbrbm_class50ep","bbrbm_class60ep","bbrbm_class70ep","bbrbm_class80ep","bbrbm_class90ep","bbrbm_class100ep",
+#"bbrbm_class1kep","bbrbm_class1.1kep","bbrbm_class1.2kep","bbrbm_class1.3kep","bbrbm_class1.4kep","bbrbm_class1.5kep","bbrbm_class1.6kep","bbrbm_class1.7kep","bbrbm_class1.8kep","bbrbm_class1.9kep",
+#"bbrbm_class2kep",
+       # "bbrbm_class3kep","bbrbm_class4kep", "bbrbm_class5kep", "bbrbm_class6kep"
+        ]#, "bbrbm_class50ep",
+
 
 
 
@@ -90,7 +97,7 @@ print("number of images", n_data)
 #load the saved weights
 
 #reconstruct using different training (epochs)
-for ind in range(20):
+for ind in range(25):
     filename1 = fname[ind]#'weights_class2kep'
     name1 = name[ind]#'bbrbm_class2kep'
     bbrbm.load_weights(filename1,name1)
@@ -109,15 +116,15 @@ for ind in range(20):
     #show_digit(image.reshape(28,28))
     # img = a[0:16,0:28] #crop the image
         ##### cropping
-    #img = a * mask_b
+        img = a * mask_b
         ##### without cropping
-        img = image.reshape(28,28)
-        img_org = img
+        #img = image.reshape(28,28)
+        #img_org = img
         img = np.concatenate((t1, img.flatten()), axis=0)
-    #img_org = img
+        img_org = img
     #print("shape of of org img", img_org.shape)
     #imga = random_image#imga = img
-        #show_digit(img_org.reshape(28,28),"croped input")
+        #show_digit(img[10:794].reshape(28,28),"croped input")
     #reconstruct image for N-MC
         for i in range(200):
             image_rec1 = bbrbm.reconstruct(img.reshape(1,-1),0)
@@ -135,9 +142,9 @@ for ind in range(20):
 
         #print("size ofa", a.size)
             ##### cropping
-        #img= img_org + np.concatenate((t1, (image_rec1 * mask_c).flatten()), axis=0)
+            img= img_org + np.concatenate((t1, (image_rec1 * mask_c).flatten()), axis=0)
             ##### without cropping
-            img= np.concatenate((t1, img_org.flatten()), axis=0)
+            #img= np.concatenate((t1, img_org.flatten()), axis=0)
 
             #show_digit(image_rec1.reshape(28, 28), "returned image")
             #show_digit(t1.reshape(1, -1), "returned label")
@@ -177,7 +184,7 @@ for ind in range(20):
 
     #print the result of construction
     #a1 = rec_backup[0:10]
-        a2 = mnist.train.labels[j]
+        a2 = mnist.test.labels[j]
         a3 = np.where(a2 == True)
 
     #print("org label position" , a2)

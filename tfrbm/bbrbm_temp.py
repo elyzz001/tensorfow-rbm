@@ -1,8 +1,9 @@
 import tensorflow as tf
+import numpy as np
 from rbm import RBM
 from util import sample_bernoulli
 
-class BBRBM(RBM):
+class BBRBMTEMP(RBM):
     def __init__(self, *args, **kwargs):
         RBM.__init__(self, *args, **kwargs)
 
@@ -33,12 +34,17 @@ class BBRBM(RBM):
         self.update_deltas  = [update_delta_w, update_delta_visible_bias, update_delta_hidden_bias]
         self.update_weights = [update_w, update_visible_bias, update_hidden_bias]
 
-        if(t == 0): #temperature zero
-            compute_hidden_real = tf.matmul(self.x, self.w) + self.hidden_bias
-            compute_hidden_real = tf.where(compute_hidden_real < 0, 0)
-            compute_hidden_real = tf.where(compute_hidden_real > 0, 1)
+        if(self.temp == 0): #temperature zero
+            compute_hidden_real1 = tf.matmul(self.x, self.w) + self.hidden_bias
+            #with tf.Session() as sess:
+            #    output = sess.run(compute_hidden_real1)
+            #    print(output)
+            mask1 =tf.zeros([self.n_hidden],tf.float32)
+
+            compute_hidden_real2 = tf.where(compute_hidden_real1 >0, 0.0) ,0.0,compute_hidden_real1)
+            compute_hidden_real3 = np.where(compute_hidden_real2 > 0, 1)
             #pick zero or one randomly
-            compute_hidden_real = tf.where(compute_hidden_real == 0, 0.5)
+            compute_hidden_real = np.where(compute_hidden_real3 == 0, 0.5)
             #binarize hidden
             h_st_bin = tf.math.greater(compute_hidden_real, tf.random.uniform([64]))
             compute_hidden = tf.cast(h_st_bin, tf.float32)

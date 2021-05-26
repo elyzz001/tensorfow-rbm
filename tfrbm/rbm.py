@@ -17,7 +17,8 @@ class RBM ():
                  err_function='mse',
                  use_tqdm=False,
                  # DEPRECATED:
-                 tqdm=None):
+                 tqdm=None,
+                 t = 1):
         if not 0.0 <= momentum <= 1.0:
             raise ValueError('momentum should be in range [0, 1]')
 
@@ -30,7 +31,7 @@ class RBM ():
         if use_tqdm or tqdm is not None:
             from tqdm import tqdm
             self._tqdm = tqdm
-
+        self.temp = t
         self.n_visible = n_visible
         self.n_hidden = n_hidden
         self.learning_rate = learning_rate

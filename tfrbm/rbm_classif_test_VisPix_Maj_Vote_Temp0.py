@@ -7,7 +7,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import os,sys,inspect
 sys.path.insert(1, os.path.join(sys.path[0], '..')) #this line shold always stay above the next line below
-from tfrbm import BBRBM, GBRBM
+from tfrbm import BBRBM, GBRBM, BBRBMTEMP
 from tensorflow.examples.tutorials.mnist import input_data
 
 
@@ -33,13 +33,13 @@ def show_digit(x,y):
 #labels pixels
 accu = [0]
 num_avg = 200
-n_data = 1000#mnist_images1.shape[0]
+n_data = 10#mnist_images1.shape[0]
 print("accuracy",accu)
 t1 = np.zeros(10)
 
 print("minist test size",mnist_images1.shape)
 #create the BM
-bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
+bbrbm = BBRBMTEMP(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True,t=0)
 
 #load the saved weights
 filename = 'weights_class5kep'

@@ -203,6 +203,8 @@ class RBM ():
         self.sess.run(self.visible_bias.assign(visible_bias))
         self.sess.run(self.hidden_bias.assign(hidden_bias))
 
+    def set_temp(self, t):
+        self.temp = t
     def load_weights(self, filename, name):
         saver = tf.train.Saver({name + '_w': self.w,
                                 name + '_v': self.visible_bias,

@@ -33,42 +33,57 @@ class BBRBMTEMP(RBM):
 
         self.update_deltas  = [update_delta_w, update_delta_visible_bias, update_delta_hidden_bias]
         self.update_weights = [update_w, update_visible_bias, update_hidden_bias]
-
-        if(self.temp == 0): #temperature zero
+        print("sel.temp is ", self.temp)
+        if(self.temp == 0.0): #temperature zero
+            print("i am inside if-sta of t =0")
             compute_hidden_real1 = tf.matmul(self.x, self.w) + self.hidden_bias
-            #with tf.Session() as sess:
-            #    output = sess.run(compute_hidden_real1)
-            #    print(output)
-            mask1 =tf.zeros([self.n_hidden],tf.float32)
+            compute_hidden_real1 = tf.where(compute_hidden_real1 < 0.0, tf.zeros_like(compute_hidden_real1),compute_hidden_real1)
+            compute_hidden_real1 = tf.where(compute_hidden_real1 > 0.0, tf.ones_like(compute_hidden_real1),compute_hidden_real1)
+            #pick zero or one randomly when a = 0
 
-            compute_hidden_real2 = tf.where(compute_hidden_real1 >0, 0.0) ,0.0,compute_hidden_real1)
-            compute_hidden_real3 = np.where(compute_hidden_real2 > 0, 1)
-            #pick zero or one randomly
-            compute_hidden_real = np.where(compute_hidden_real3 == 0, 0.5)
-            #binarize hidden
-            h_st_bin = tf.math.greater(compute_hidden_real, tf.random.uniform([64]))
-            compute_hidden = tf.cast(h_st_bin, tf.float32)
-            self.compute_hidden = compute_hidden########
+            if(np.random.uniform(0,1) > 0.5):
+                pick_x = tf.ones_like(compute_hidden_real1)
+            else:
+                pick_x = tf.zeros_like(compute_hidden_real1)
+
+            compute_hidden_real = tf.where(compute_hidden_real1 == 0.0, pick_x,compute_hidden_real1)
+
+            #binarize hidden (i think no need to binarize since the above process does that)
+                #h_st_bin = tf.math.greater(compute_hidden_real, tf.random.uniform([64]))
+                #compute_hidden = tf.cast(h_st_bin, tf.float32)
+            self.compute_hidden = compute_hidden_real#compute_hidden########
             #######
             #sigmoid fct for t = 0
-            compute_visible_real__t0 = tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias
-            compute_visible_real_t0 = tf.where(compute_visible_real__t0 < 0 , 0)
-            compute_visible_real_t0 = tf.where(compute_visible_real_t0 > 0 , 1)
-            compute_visible_real_t0 = tf.where(compute_visible_real_t0 == 0, 0.5)
-            self.compute_visible_real = compute_visible_real
+            compute_visible_real = tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias
+            compute_visible_real = tf.where(compute_visible_real < 0.0, tf.zeros_like(compute_visible_real),
+                                            compute_visible_real)
+            compute_visible_real = tf.where(compute_visible_real > 0.0, tf.ones_like(compute_visible_real),
+                                            compute_visible_real)
+            # pick zero or one randomly when a = 0
+
+            if (np.random.uniform(0, 1) > 0.5):
+                pick_x = tf.ones_like(compute_visible_real)
+            else:
+                pick_x = tf.zeros_like(compute_visible_real)
+
+            compute_visible_real = tf.where(compute_visible_real == 0.0, pick_x, compute_visible_real)
+
+            #self.compute_visible_real = compute_visible_real
+
             #binarize visual
-            v_st_bin = tf.math.greater(compute_visible_real, tf.random.uniform([794]))
-            compute_visible = tf.cast(v_st_bin, tf.float32)
-            self.compute_visible =compute_visible ########
+                #v_st_bin = tf.math.greater(compute_visible_real, tf.random.uniform([794]))
+                #compute_visible = tf.cast(v_st_bin, tf.float32)
+            self.compute_visible = compute_visible_real #compute_visible ########
         else: #temperature other than zero
+            print("i am inside else-sta of t not 0")
             #compute hidden units
-            compute_hidden_real = tf.nn.sigmoid(tf.matmul(self.x, self.w) + self.hidden_bias)
+            compute_hidden_real = tf.nn.sigmoid(tf.math.divide(tf.matmul(self.x, self.w) + self.hidden_bias,self.temp))
             #binarize hidden
             h_st_bin = tf.math.greater(compute_hidden_real, tf.random.uniform([64]))
             compute_hidden = tf.cast(h_st_bin, tf.float32)
             self.compute_hidden = compute_hidden
             #compute the visible units
-            compute_visible_real = tf.nn.sigmoid(tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias)
+            compute_visible_real = tf.nn.sigmoid(tf.math.divide(tf.matmul(self.compute_hidden, tf.transpose(self.w)) + self.visible_bias,self.temp))
             # binarize visual
             v_st_bin = tf.math.greater(compute_visible_real, tf.random.uniform([794]))
             compute_visible = tf.cast(v_st_bin, tf.float32)

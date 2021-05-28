@@ -99,12 +99,12 @@ class RBM ():
         if(t == 0.0):
             #a = self.sess.run(self.compute_visible_real, feed_dict={self.x: batch_x}) #real without binarization
             a = self.sess.run(self.compute_visible1, feed_dict={self.x: batch_x})
-            print("calculation for T = 0")
-            print(" T= ", t)
+            #print("calculation for T = 0")
+            #print(" T= ", t)
         else:
             a = self.sess.run(self.compute_visible2, feed_dict={self.x: batch_x})
-            print("calculation for T != 0")
-            print(" T= ",t)
+            #print("calculation for T != 0")
+            #print(" T= ",t)
         #b = a.reshape(1,-1)
         #plt.imshow(a.reshape(28, 28))
         #plt.show()

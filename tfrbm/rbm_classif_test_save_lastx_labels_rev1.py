@@ -7,7 +7,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import os,sys,inspect
 sys.path.insert(1, os.path.join(sys.path[0], '..')) #this line shold always stay above the next line below
-from tfrbm import BBRBM, GBRBM
+from tfrbm import BBRBM, GBRBM, BBRBMTEMP
 from tensorflow.examples.tutorials.mnist import input_data
 
 #load the mnist data
@@ -38,7 +38,7 @@ t1 = np.zeros(10)
 
 print("minist test size",mnist_images1.shape)
 #create the BM
-bbrbm = BBRBM(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
+bbrbm = BBRBMTEMP(n_visible=794, n_hidden=64, learning_rate=0.01, momentum=0.95, use_tqdm=True)
 
 
 fname = ["weights_class7kep","weights_class8kep","weights_class9kep","weights_class10kep","weights_class11kep","weights_class12kep","weights_class13kep"
@@ -129,7 +129,7 @@ for ind in range(25):
         #show_digit(img[10:794].reshape(28,28),"croped input")
     #reconstruct image for N-MC
         for i in range(200):
-            image_rec1 = bbrbm.reconstruct(img.reshape(1,-1),0)
+            image_rec1 = bbrbm.reconstruct(img.reshape(1,-1),1)
         #print("shape of of rec1",image_rec1.shape)
             image_rec1 = image_rec1.reshape(794, )
             if( i > 200 - num_avg -1):

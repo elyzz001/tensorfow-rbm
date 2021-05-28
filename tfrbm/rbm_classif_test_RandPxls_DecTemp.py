@@ -59,7 +59,7 @@ for j in range(n_data) :
 
 #print(j)
 
-    image = random_image#mnist_images1[j]
+    image = mnist_images1[j]
     #show_digit(image.reshape(28, 28), "Original image")
     #print("image label",mnist.test.labels[j])
     a = image.reshape(28,28)
@@ -109,13 +109,13 @@ for j in range(n_data) :
             bbrbm.temp = 0.001
         if (i == 201):
             show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.001 after 50 iterations")
-            bbrbm.temp = 0.0001
+            bbrbm.temp = 2
 
         if (i == 250):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.0001 after 50 iterations")
-            bbrbm.temp = 0.00001
+            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 2.0 after 50 iterations")
+            bbrbm.temp = 1.0
         if (i == 300):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.00001 after 50 iterations")
+            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1.0 after 50 iterations")
             bbrbm.temp = 0.0
 
         t1 = image_rec1[0:10]

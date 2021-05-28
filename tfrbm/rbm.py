@@ -58,8 +58,11 @@ class RBM ():
 
         assert self.update_weights is not None
         assert self.update_deltas is not None
-        assert self.compute_hidden is not None
-        assert self.compute_visible is not None
+       #
+        assert self.compute_hidden1 is not None
+        assert self.compute_visible1 is not None
+        #assert self.compute_hidden is not None
+        #assert self.compute_visible is not None
         assert self.compute_visible_from_hidden is not None
 
         if err_function == 'cosine':
@@ -67,8 +70,8 @@ class RBM ():
             x2_norm = tf.nn.l2_normalize(self.compute_visible, 1)
             cos_val = tf.reduce_mean(tf.reduce_sum(tf.mul(x1_norm, x2_norm), 1))
             self.compute_err = tf.acos(cos_val) / tf.constant(np.pi)
-        else:
-            self.compute_err = tf.reduce_mean(tf.square(self.x - self.compute_visible))
+        #else:
+            #self.compute_err = tf.reduce_mean(tf.square(self.x - self.compute_visible))
 
         init = tf.global_variables_initializer()
         self.sess = tf.Session()
@@ -77,8 +80,8 @@ class RBM ():
     def _initialize_vars(self):
         pass
 
-    def get_err(self, batch_x):
-        return self.sess.run(self.compute_err, feed_dict={self.x: batch_x})
+    #def get_err(self, batch_x):
+        #return self.sess.run(self.compute_err, feed_dict={self.x: batch_x})
 
     def get_free_energy(self):
         pass
@@ -89,15 +92,19 @@ class RBM ():
     def transform_inv(self, batch_y):
         return self.sess.run(self.compute_visible_from_hidden, feed_dict={self.y: batch_y})
 
-    def reconstruct(self, batch_x, index):
+    def reconstruct(self, batch_x, t):
 
         #b = batch_x
         #for i in range(iter_num):
-        if(index ==1):
-            a = self.sess.run(self.compute_visible_real, feed_dict={self.x: batch_x})
-            #print("return the real valued image")
+        if(t == 0.0):
+            #a = self.sess.run(self.compute_visible_real, feed_dict={self.x: batch_x}) #real without binarization
+            a = self.sess.run(self.compute_visible1, feed_dict={self.x: batch_x})
+            print("calculation for T = 0")
+            print(" T= ", t)
         else:
-            a = self.sess.run(self.compute_visible, feed_dict={self.x: batch_x})
+            a = self.sess.run(self.compute_visible2, feed_dict={self.x: batch_x})
+            print("calculation for T != 0")
+            print(" T= ",t)
         #b = a.reshape(1,-1)
         #plt.imshow(a.reshape(28, 28))
         #plt.show()

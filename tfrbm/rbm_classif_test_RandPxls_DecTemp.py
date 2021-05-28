@@ -81,9 +81,9 @@ for j in range(n_data) :
     #imga = random_image#imga = img
     show_digit(img_org[10:794].reshape(28,28),"croped input")
     #reconstruct image for N-MC
-    bbrbm.temp = 1
+    bbrbm.temp = 4
     temp_idx = 9
-    for i in range(100000):
+    for i in range(1000000):
         image_rec1 = bbrbm.reconstruct(img.reshape(1,-1),bbrbm.temp)
         #print("shape of of rec1",image_rec1.shape)
         image_rec1 = image_rec1.reshape(794, )
@@ -109,10 +109,11 @@ for j in range(n_data) :
             #show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1 after %i iterations" %i)
             if( bbrbm.temp > 0.0001):
                 bbrbm.temp = bbrbm.temp - 0.0001
-            else:
+                temp_idx += 10
+        if (i == 989990):
+                print("temp is ", bbrbm.temp)
                 bbrbm.temp = 0.0
-            temp_idx += 10
-            #print("temp is ",bbrbm.temp )
+
             #print("temp_idx is ", temp_idx)
         #if (i == 150):
         #    show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.01 after 50 iterations")

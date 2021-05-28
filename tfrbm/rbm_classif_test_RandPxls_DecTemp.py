@@ -43,13 +43,13 @@ fname = ["1-3","2-3","3-3","4-3","5-3","6-3","7-3","8-3","9-3","10-3","11-3","12
 print("number of images", n_data)
 
 #load the saved weights
-filename = 'weights_class19kep'
-name = 'bbrbm_class19kep'
+filename = 'weights_class10kep'
+name = 'bbrbm_class10kep'
 bbrbm.load_weights(filename,name)
 
 #random image for testing
 random_image = np.random.uniform(0,1,784)
-image_rec_bin = np.greater(random_image, np.random.uniform(0,1,784))
+image_rec_bin = np.greater(random_image, 0.9)#np.random.uniform(0,1,784))
 random_image = image_rec_bin.astype( int)
 print("t is ",bbrbm.temp)
 for j in range(n_data) :
@@ -58,8 +58,12 @@ for j in range(n_data) :
     #random_image = image_rec_bin.astype(int)
 
 #print(j)
+    random_image = np.random.uniform(0, 1, 784)
+    show_digit(random_image.reshape(28, 28), "Original rand image")
+    image_rec_bin = np.greater(random_image, np.random.uniform(0,1,1))
+    random_image = image_rec_bin.astype(int)
 
-    image = mnist_images1[j]
+    image = random_image #mnist_images1[j]
     #show_digit(image.reshape(28, 28), "Original image")
     #print("image label",mnist.test.labels[j])
     a = image.reshape(28,28)
@@ -78,7 +82,8 @@ for j in range(n_data) :
     show_digit(img_org[10:794].reshape(28,28),"croped input")
     #reconstruct image for N-MC
     bbrbm.temp = 1
-    for i in range(1000):
+    temp_idx = 9
+    for i in range(100000):
         image_rec1 = bbrbm.reconstruct(img.reshape(1,-1),bbrbm.temp)
         #print("shape of of rec1",image_rec1.shape)
         image_rec1 = image_rec1.reshape(794, )
@@ -86,8 +91,8 @@ for j in range(n_data) :
 
         #if( i > 400 - num_avg -1):
         #if(i == 300):
-            #store_recon_vu[i - (400 - num_avg)] = image_rec1
-            #set_temp(bbrbm,0.0)
+        #store_recon_vu[i - (400 - num_avg)] = image_rec1
+        #set_temp(bbrbm,0.0)
             #print("trying to set t to 0")
            # bbrbm.temp = 0.1
             #print("stored labels : ", store_labels)
@@ -97,35 +102,42 @@ for j in range(n_data) :
             #print("new temp 2 is ", bbrbm.temp)
         #print("new shape of of rec1", image_rec1.shape)
         #if (i == 1):
-        print("i = ", i)
+        #print("i = ", i)
         #show_digit(image_rec1[10:794].reshape(28, 28), "reconstructed image ")
             #bbrbm.temp = 0.01
-        if (i == 100):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1 after %i iterations" %i)
-            bbrbm.temp = 0.01
-            print("temp has been set to zero ")
-        if (i == 150):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.01 after 50 iterations")
-            bbrbm.temp = 0.001
-        if (i == 201):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.001 after 50 iterations")
-            bbrbm.temp = 2
+        if (i == temp_idx):
+            #show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1 after %i iterations" %i)
+            if( bbrbm.temp > 0.0001):
+                bbrbm.temp = bbrbm.temp - 0.0001
+            else:
+                bbrbm.temp = 0.0
+            temp_idx += 10
+            #print("temp is ",bbrbm.temp )
+            #print("temp_idx is ", temp_idx)
+        #if (i == 150):
+        #    show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.01 after 50 iterations")
+        #    bbrbm.temp = 0.001
+        #if (i == 201):
+         #   show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 0.001 after 50 iterations")
+         #   bbrbm.temp = 2
 
-        if (i == 250):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 2.0 after 50 iterations")
-            bbrbm.temp = 1.0
-        if (i == 300):
-            show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1.0 after 50 iterations")
-            bbrbm.temp = 0.0
+      #  if (i == 250):
+         #   show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 2.0 after 50 iterations")
+          #  bbrbm.temp = 1.0
+        #if (i == 300):
+           # show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1.0 after 50 iterations")
+          #  bbrbm.temp = 0.0
 
-        t1 = image_rec1[0:10]
+        #t1 = image_rec1[0:10]
         rec_backup = image_rec1
         #image_rec1 = image_rec1[10:794].reshape(28,28 )
         #print("size ofa", a.size)
         img= rec_backup#img_org + np.concatenate((t1, (image_rec1 * mask_c).flatten()), axis=0)
         #show_digit(image_rec1[10:794].reshape(28, 28), "returned image")
         #show_digit(img[10:794].reshape(28, 28), "image to be fed")
+    print("temp is ",bbrbm.temp )
     show_digit(rec_backup[10:794].reshape(28, 28), "reconstructed image T = 0.0 for %i iterations" %i)
+
     #show_digit(rec_backup[0:10].reshape(1, -1), "reconstructed label")
     #max vote for the correct label
     #print("index i : ", i)

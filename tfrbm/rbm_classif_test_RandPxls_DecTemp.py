@@ -63,7 +63,7 @@ for j in range(n_data) :
     image_rec_bin = np.greater(random_image, np.random.uniform(0,1,1))
     random_image = image_rec_bin.astype(int)
 
-    image = random_image #mnist_images1[j]
+    image = mnist_images1[2] #random_image #
     #show_digit(image.reshape(28, 28), "Original image")
     #print("image label",mnist.test.labels[j])
     a = image.reshape(28,28)
@@ -108,7 +108,7 @@ for j in range(n_data) :
         if (i == temp_idx):
             #show_digit(image_rec1[10:794].reshape(28, 28), "Reconstructed image T = 1 after %i iterations" %i)
             if( bbrbm.temp > 0.0001):
-                bbrbm.temp = bbrbm.temp - 0.0001
+                bbrbm.temp = bbrbm.temp - 0.001
                 temp_idx += 10
         if (i == 989990):
                 print("temp is ", bbrbm.temp)
